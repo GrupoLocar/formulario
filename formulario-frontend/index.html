@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grupo Locar - Atualização de Dados Cadastrais</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="titulo">Grupo Locar</h1>
+        <img class="logo" src="Logotipo.png" alt="Logotipo Grupo Locar" />
+        <h1>Atualização de Dados Cadastrais – Obrigatória</h1>
+        <br />
+        <p>Prezados(as) colaboradores(as),</p>
+        <br />
+        <p>
+            <strong>Por gentileza, solicitamos que todos preencham o formulário de
+                atualização de dados até 30/06/2025.</strong>
+        </p>
+        <br />
+        <p>
+            Pedimos que todos os campos sejam preenchidos com atenção e veracidade. As
+            informações fornecidas serão tratadas com total sigilo e utilizadas exclusivamente para fins
+            administrativos.
+            <span style="color: red;">Caso não possua todos os dados solicitados, preencha o campo correspondente com zeros.</span>
+        </p>
+
+        <p>Contamos com a colaboração de todos!</p>
+        <p>
+            Atenciosamente,<br />
+            Karen Monnerat<br />
+            Recursos Humanos<br />
+            Grupo Locar
+        </p>
+        <hr />
+
+        <h2 style="margin-top: 30px">Formulário de Atualização</h2>
+        <form id="dadosForm">
+            <label>Nome Completo:</label>
+            <input type="text" name="nome" maxlength="100" required />
+
+            <h3>📌 Documentos Obrigatórios</h3>
+
+            <label>CNH (PDF ou imagem):</label>
+            <div class="custom-file-upload">
+                <input type="file" id="cnhArquivo" name="cnhArquivo" accept=".pdf,image/*" style="display: none" />
+                <button type="button" onclick="document.getElementById('cnhArquivo').click()">Selecionar
+                    Arquivo</button>
+                <span id="nomeArquivoCNH">Nenhum arquivo escolhido</span>
+            </div>
+
+            <label style="margin-top: 30px">CNH:</label>
+            <input type="text" name="cnh" required maxlength="11" />
+
+            <label>Categoria:</label>
+            <select name="categoria" required>
+                <option value="">Selecione</option>
+                <option>AB</option>
+                <option>AC</option>
+                <option>AD</option>
+                <option>AE</option>
+                <option>B</option>
+                <option>C</option>
+                <option>D</option>
+                <option>E</option>
+            </select>
+
+            <label>Data de Validade da CNH:</label>
+            <input type="date" name="dataValidadeCNH" required />
+
+            <label style="margin-top: 50px">Comprovante de Residência:</label>
+            <div class="custom-file-upload">
+                <input type="file" id="comprovanteResidencia" name="comprovanteResidencia" style="display: none" />
+                <button type="button" onclick="document.getElementById('comprovanteResidencia').click()">Selecionar
+                    Arquivo</button>
+                <span id="nomeArquivoComprovante">Nenhum arquivo escolhido</span>
+            </div>
+
+            <h3 style="margin-top: 50px">📎 Documentos Opcionais</h3>
+
+            <label>Nada Consta:</label>
+            <span style="color: red;">Obrigatório para o estado do Rio de Janeiro</span>
+            <div class="custom-file-upload">
+                <input type="file" id="nadaConstaArquivo" name="nadaConstaArquivo" style="display: none" />
+                <button type="button" onclick="document.getElementById('nadaConstaArquivo').click()">Selecionar
+                    Arquivo</button>
+                <span id="nomeArquivoNadaConsta">Nenhum arquivo escolhido</span>
+            </div>
+
+            <label style="margin-top: 20px">Comprovante MEI (opcional):</label>
+            <div class="custom-file-upload">
+                <input type="file" id="meiArquivo" name="meiArquivo" style="display: none" />
+                <button type="button" onclick="document.getElementById('meiArquivo').click()">Selecionar
+                    Arquivo</button>
+                <span id="nomeArquivoMEI">Nenhum arquivo escolhido</span>
+            </div>
+
+            <label style="margin-top: 50px">Contrato:</label>
+            <select name="contrato" required>
+                <option value="">Selecione</option>
+                <option>Comum</option>
+                <option>Gestor</option>
+                <option>MEI</option>
+            </select>
+
+            <label>Data de Admissão:</label>
+            <input type="date" name="dataAdmissao" required />
+
+            <label>Telefone:</label>
+            <input type="tel" name="telefone" maxlength="15" required oninput="mascaraTelefone(this)" />
+
+            <label>Email:</label>
+            <input type="email" name="email" required maxlength="100" />
+
+            <label>Endereço:</label>
+            <input type="text" name="endereco" required maxlength="150" />
+
+            <label>Complemento:</label>
+            <input type="text" name="complemento" required maxlength="150" />
+
+            <label>Bairro:</label>
+            <input type="text" name="bairro" required maxlength="150" />
+
+            <label>Município:</label>
+            <input type="text" name="municipio" required maxlength="150" />
+
+            <label>CEP:</label>
+            <input type="text" name="cep" maxlength="10" required oninput="mascaraCEP(this)" />
+
+            <label>Banco:</label>
+            <input type="text" name="banco" required maxlength="100" />
+
+            <label>Agência:</label>
+            <input type="text" name="agencia" required maxlength="50" />
+
+            <label>Conta:</label>
+            <input type="text" name="conta" required maxlength="30" />
+
+            <label>PIX:</label>
+            <input type="text" name="pix" required maxlength="80" />
+
+            <label>Data de Nascimento:</label>
+            <input type="date" name="dataNascimento" required id="dataNascimento" />
+
+            <label>Idade:</label>
+            <input type="number" name="idade" id="idade" disabled />
+
+            <label>CPF:</label>
+            <input type="text" name="cpf" maxlength="14" required oninput="mascaraCPF(this)" />
+
+            <label>RG:</label>
+            <input type="text" name="rg" maxlength="12" required oninput="mascaraRG(this)" />
+
+            <label>Estado Civil:</label>
+            <select name="estadoCivil" required>
+                <option value="">Selecione</option>
+                <option>Casado(a)</option>
+                <option>Solteiro(a)</option>
+                <option>Separado(a)</option>
+                <option>Divorciado(a)</option>
+                <option>Viúvo(a)</option>
+            </select>
+
+            <label>Filhos:</label>
+            <input type="number" name="filhos" max="99" required maxlength="2" oninput="limitarDigitos(this)" />
+
+            <label>Nome de Familiar para Contato:</label>
+            <input type="text" name="nomeFamiliar" required maxlength="30" />
+
+            <label>Telefone do Familiar:</label>
+            <input type="tel" name="contatoFamiliar" maxlength="15" required oninput="mascaraTelefone(this)" />
+
+            <label>Indicado por:</label>
+            <input type="text" name="indicado" required maxlength="30" />
+
+            <label>Se desejar, utilize o campo 'Observações' para deixar uma mensagem adicional ou comentário
+                relevante.</label>
+            <textarea name="observacao" maxlength="250" style="width: 100%; height: 120px"></textarea>
+
+            <div class="button">
+                <input type="submit" value="Enviar" />
+            </div>
+        </form>
+    </div>
+
+	<script>
+		// Máscaras e utilitários
+		function limitarDigitos(input) {
+			if (input.value.length > 2) input.value = input.value.slice(0, 2);
+		}
+
+		function mascaraTelefone(input) {
+			input.value = input.value
+				.replace(/\D/g, '')
+				.replace(/^(\d{2})(\d)/g, '($1)$2')
+				.replace(/(\d{5})(\d)/, '$1-$2')
+				.substring(0, 14);
+		}
+
+		function mascaraCPF(input) {
+			input.value = input.value
+				.replace(/\D/g, '')
+				.replace(/(\d{3})(\d)/, '$1.$2')
+				.replace(/(\d{3})(\d)/, '$1.$2')
+				.replace(/(\d{3})(\d{2})$/, '$1-$2')
+				.substring(0, 14);
+		}
+
+		function mascaraRG(input) {
+			input.value = input.value
+				.replace(/\D/g, '')
+				.replace(/(\d{2})(\d)/, '$1.$2')
+				.replace(/(\d{3})(\d)/, '$1.$2')
+				.replace(/(\d{3})(\d{1})$/, '$1-$2')
+				.substring(0, 12);
+		}
+
+		function mascaraCEP(input) {
+			input.value = input.value
+				.replace(/\D/g, '')
+				.replace(/^(\d{2})(\d)/g, '$1.$2')
+				.replace(/(\d{3})(\d)/, '$1-$2')
+				.substring(0, 10);
+		}
+
+		// Atualização dos nomes dos arquivos
+		['cnhArquivo', 'comprovanteResidencia', 'nadaConstaArquivo', 'meiArquivo'].forEach(id => {
+			const input = document.getElementById(id);
+			const span = document.getElementById(`nomeArquivo${id.charAt(0).toUpperCase() + id.slice(1)}`);
+			if (input && span) {
+				input.addEventListener('change', () => {
+					span.textContent = input.files.length > 0 ? input.files[0].name : 'Nenhum arquivo escolhido';
+				});
+			}
+		});
+
+		// Idade automática
+		document.getElementById('dataNascimento')?.addEventListener('change', function () {
+			const dataNasc = new Date(this.value);
+			const hoje = new Date();
+			if (!isNaN(dataNasc)) {
+				let idade = hoje.getFullYear() - dataNasc.getFullYear();
+				const m = hoje.getMonth() - dataNasc.getMonth();
+				if (m < 0 || (m === 0 && hoje.getDate() < dataNasc.getDate())) idade--;
+				document.getElementById('idade').value = idade;
+			} else {
+				document.getElementById('idade').value = '';
+			}
+		});
+
+		// Envio do formulário
+		document.getElementById('dadosForm').addEventListener('submit', async function (e) {
+			e.preventDefault();
+
+			const form = e.target;
+
+			// Validação básica de arquivos obrigatórios
+			const arquivosObrigatorios = [
+				{ id: 'cnhArquivo', nome: 'CNH' },
+				{ id: 'comprovanteResidencia', nome: 'Comprovante de Residência' }
+			];
+
+			for (const arquivo of arquivosObrigatorios) {
+				const input = document.getElementById(arquivo.id);
+				if (!input || input.files.length === 0) {
+					alert(`Por favor, selecione o arquivo obrigatório: ${arquivo.nome}`);
+					input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					return;
+				}
+			}
+
+			if (!form.checkValidity()) {
+				alert('Por favor, preencha todos os campos obrigatórios.');
+				return;
+			}
+
+			const formData = new FormData(form); // Inclui campos e arquivos automaticamente
+
+			try {
+				const response = await fetch("https://formulario-backend-e8ok.onrender.com/enviar", {
+					method: "POST",
+					body: formData
+				});
+
+				if (response.ok) {
+					alert("Formulário enviado com sucesso!");
+					// window.location.href = 'agradecimento.html';
+				} else {
+					alert("Erro ao enviar formulário. Tente novamente.");
+				}
+			} catch (err) {
+				alert("Erro de conexão. Verifique sua internet ou tente mais tarde.");
+				console.error(err);
+			}
+		});
+	</script>
+
+</body>
+
+</html>
+
