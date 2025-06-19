@@ -5,7 +5,7 @@ Todos os campos são validados no navegador e os documentos obrigatórios precis
 
 ## 📷 Pré-visualização
 
-![Visual do formulário](Formulario-cadastro.png)
+![Visual do formulário](formulario/formulario-frontend/Formulario.png)
 
 ## 📁 Arquivos incluídos
 
