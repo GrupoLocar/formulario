@@ -32,7 +32,6 @@ img.logo {
   }
 
   .cnh {
-    /* margin-top: 30px; */
     margin-left: 43px;
   }
 
@@ -83,10 +82,6 @@ img.logo {
   margin-top: 30px;
 }
 
-.telefone{
-  /* margin-left: 20px; */
-}
-
 .agencia {
   margin-top: 0px;
 }
@@ -127,12 +122,10 @@ img.logo {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  /* gap: 40px; */
 }
 
 .form-linha label {
-  width: 30%; /* define largura fixa da label */
-  /* font-weight: bold; */
+  width: 30%;
 }
 
 .custom-file-upload button {
@@ -169,5 +162,4 @@ img.logo {
   display: flex;
   align-items: center;
   margin-bottom: 3px;
-  /* gap: 10px; */
 }

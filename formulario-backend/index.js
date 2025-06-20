@@ -9,27 +9,36 @@ const fs = require('fs');
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// 📁 Garante que a pasta "uploads" exista
-const uploadPath = 'uploads';
+// 📁 Pasta onde está o formulário (docs)
+const docsPath = path.join(__dirname, '../docs');
+app.use(express.static(docsPath));
+
+// 📁 Pasta de uploads
+const uploadPath = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath);
 }
+app.use('/uploads', express.static(uploadPath));
 
-// 🎒 Configuração do multer
+// 🧭 Rota principal: serve o formulário
+app.get('/', (req, res) => {
+  res.sendFile(path.join(docsPath, 'index.html'));
+});
+
+// 🎒 Upload de arquivos com multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadPath),
   filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
 const upload = multer({ storage });
 
-// 📦 Schema do Funcionário
+// 🧾 Modelo do Funcionário
 const funcionarioSchema = new mongoose.Schema({
   nome: String,
   situacao: { type: String, default: 'Aprovar' },
   contrato: { type: String, default: 'Verificar' },
-  dataAdmissao: Date,
+  dataAdmissao: { type: Date, default: new Date('1900-01-01T00:00:00.000+00:00') },
   telefone: String,
   email: String,
   endereco: String,
@@ -62,13 +71,12 @@ const funcionarioSchema = new mongoose.Schema({
 
 const Funcionario = mongoose.model('Funcionario', funcionarioSchema);
 
-// 🔗 Conexão MongoDB Atlas
+// 🔌 Conexão MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ Conectado ao MongoDB Atlas");
-    console.log("🗃️ Banco:", mongoose.connection.name);
   })
-  .catch(err => console.error("❌ Erro de conexão:", err));
+  .catch(err => console.error("❌ Erro ao conectar:", err));
 
 // 📥 POST /api/funcionarios
 app.post('/api/funcionarios', upload.fields([
@@ -110,7 +118,7 @@ app.get('/api/funcionarios', async (req, res) => {
 });
 
 // 🚀 Inicialização do servidor
-const PORT = 10000;
-app.listen(PORT, '0.0.0.0', () =>
-  console.log(`🚀 Servidor rodando em http://0.0.0.0:${PORT}`)
-);
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Servidor rodando em http://0.0.0.0:${PORT}`);
+});

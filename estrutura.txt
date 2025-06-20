@@ -1,0 +1,24 @@
+Estrutura do projeto formulario
+
+|   .gitignore
+|   README.md
++---docs
+|       agradecimento.html
+|       favicon.ico
+|       Formulario.png
+|       index.css
+|       index.html
+|       index.js
+|       Logotipo.png
++---formulario-backend
+|   |   .env
+|   |   .gitignore
+|   |   index.js
+|   |   package-lock.json
+|   |   package.json
+|   |
+|   \---uploads
+\---public
+        index.js
+
+
