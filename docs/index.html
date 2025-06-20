@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grupo Locar - Atualização de Dados Cadastrais</title>
+    <title>Grupo Locar - Atualização de Dados</title>
     <link rel="stylesheet" href="index.css" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
@@ -13,7 +13,7 @@
     <div class="container">
         <h1 class="titulo">Grupo Locar</h1>
         <img class="logo" src="Logotipo.png" alt="Logotipo Grupo Locar" />
-        <h1>Atualização de Dados Cadastrais – Obrigatória</h1>
+        <h1>Atualização de Dados Cadastrais Obrigatória</h1>
         <br />
         <p>Prezados(as) colaboradores(as),</p>
         <br />
@@ -29,7 +29,6 @@
             <span style="color: red;">Caso não possua todos os dados solicitados, preencha o campo correspondente com
                 zeros.</span>
         </p>
-
         <p>Contamos com a colaboração de todos!</p>
         <p>
             Atenciosamente,<br />
@@ -38,42 +37,59 @@
             Grupo Locar
         </p>
         <hr />
-
         <h2 style="margin-top: 30px">Formulário de Atualização</h2>
-        <form id="dadosForm">
-            <label>Nome Completo:</label>
-            <input type="text" name="nome" maxlength="100" required />
+        <form id="formFuncionario">
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label style="display: inline-block; width: 80px;">Nome Completo: </label>
+                <input type="text" name="nome" maxlength="100" required placeholder="nome completo"
+                    style="margin-left: 10px; width: 400px;" />
+            </div>
+            <div>
+                <label class="telefone">Telefone: </label>
+                <input type="text" name="telefone" maxlength="15" required placeholder="telefone"
+                    style="margin-left: 16px; width: 100px;" oninput="mascaraTelefone(this)" />
+            </div>
+
+            <!-- Campos ocultos para valores padrão -->
+            <input type="hidden" name="situacao" value="Aprovar" />
+            <input type="hidden" name="contrato" value="Verificar" />
 
             <h3>📌 Documentos Obrigatórios</h3>
 
-            <label>CNH (PDF ou imagem):</label>
-            <span style="color: red;">Obrigatório para o estado do Rio de Janeiro.</span>
-            <div class="custom-file-upload">
-                <input type="file" id="cnhArquivo" name="cnhArquivo" accept=".pdf,image/*" style="display: none" />
-                <button type="button" onclick="document.getElementById('cnhArquivo').click()">Selecionar
-                    Arquivo</button>
-                <span id="nomeArquivoCNH">Nenhum arquivo escolhido</span>
+            <div>
+                <label>CNH (PDF ou imagem): Por favor envie o documento e preencha os campos abaixo.</label>
+                <div class="custom-file-upload">
+                    <input class="cnhPdfImagem" type="file" id="cnhArquivo" name="cnhArquivo" accept=".pdf,image/*"
+                        style="display: none" />
+                    <button class="cnhPdfImagem type=" button"
+                        onclick="document.getElementById('cnhArquivo').click()">Selecionar
+                        Arquivo</button>
+                    <span class="cnhPdfImagem id=" nomeArquivoCNH">Nenhum arquivo escolhido</span>
+                </div>
             </div>
-
-            <label style="margin-top: 30px">CNH:</label>
-            <input type="text" name="cnh" required maxlength="11" />
-
-            <label>Categoria:</label>
-            <select name="categoria" required>
-                <option value="">Selecione</option>
-                <option>AB</option>
-                <option>AC</option>
-                <option>AD</option>
-                <option>AE</option>
-                <option>B</option>
-                <option>C</option>
-                <option>D</option>
-                <option>E</option>
-            </select>
-
-            <label>Data de Validade da CNH:</label>
-            <input type="date" name="dataValidadeCNH" required />
-
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label>CNH: </label>
+                <input class="cnh" type="text" name="cnh" maxlength="11" required placeholder="cnh" style="width: 90px;"
+                    oninput="this.value = this.value.replace(/\D/g, '').substring(0, 11);" />
+                <div>
+                    <label style="margin-left: 20px;">Validade da CNH: </label>
+                    <input type="date" name="dataValidadeCNH" required style="width: 110px;" />
+                </div>
+            </div>
+            <div>
+                <label>Categoria:</label>
+                <select class="categoria" name="categoria" required style="width: 110px;">
+                    <option>Selecione</option>
+                    <option>AB</option>
+                    <option>AC</option>
+                    <option>AD</option>
+                    <option>AE</option>
+                    <option>B</option>
+                    <option>C</option>
+                    <option>D</option>
+                    <option>E</option>
+                </select>
+            </div>
             <label style="margin-top: 50px">Comprovante de Residência:</label>
             <div class="custom-file-upload">
                 <input type="file" id="comprovanteResidencia" name="comprovanteResidencia" style="display: none" />
@@ -92,115 +108,143 @@
                     Arquivo</button>
                 <span id="nomeArquivoNadaConsta">Nenhum arquivo escolhido</span>
             </div>
-
             <label style="margin-top: 20px">Comprovante MEI (opcional):</label>
             <div class="custom-file-upload">
-                <input type="file" id="meiArquivo" name="meiArquivo" style="display: none" />
-                <button type="button" onclick="document.getElementById('meiArquivo').click()">Selecionar
+                <input class="mei" type="file" id="meiArquivo" name="meiArquivo" style="display: none; width: 100px;" />
+                <button class="mei" type="button" onclick="document.getElementById('meiArquivo').click()">Selecionar
                     Arquivo</button>
-                <span id="nomeArquivoMEI">Nenhum arquivo escolhido</span>
+                <span class="mei" id="nomeArquivoMEI">Nenhum arquivo escolhido</span>
+            </div>
+            <div class="form-grid">
+                <div class="form-col">
+                    <div>
+                        <label>Data de Admissão: </label>
+                        <input class="inputadmissao" type="date" name="dataAdmissao" required style="width: 100px;" />
+                    </div>
+                    <div class="form-item">
+                        <label>Data de Nascimento: </label>
+                        <input class="inputnascimento" type="date" name="dataNascimento" required
+                            style="width: 100px;" />
+                    </div>
+
+                    <div class="form-item">
+                        <label>Estado Civil: </label>
+                        <select class="estadocivil" name="estadoCivil" required>
+                            <option>Selecione</option>
+                            <option>Casado(a)</option>
+                            <option>Solteiro(a)</option>
+                            <option>Separado(a)</option>
+                            <option>Divorciado(a)</option>
+                            <option>Viúvo(a)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>CPF: </label>
+                        <input class="inputcpf" type="text" name="cpf" maxlength="14" required placeholder="cpf"
+                            style="width: 100px;" oninput="mascaraCPF(this)" />
+                    </div>
+                    <div class="form-item">
+                        <label>RG: </label>
+                        <input class="inputrg" type="text" name="rg" maxlength="13" required placeholder="rg"
+                            style="width: 100px;" oninput="mascaraRG(this)" />
+                    </div>
+                    <div class="form-item">
+                        <label>Filhos: </label>
+                        <input class="inputfilhos" type="number" name="filhos" required placeholder="filhos"
+                            style="width: 50px;" oninput="this.value = this.value.slice(0, 2)" />
+                    </div>
+                </div>
             </div>
 
-            <label style="margin-top: 50px">Contrato:</label>
-            <select name="contrato" required>
-                <option value="">Selecione</option>
-                <option>Comum</option>
-                <option>Gestor</option>
-                <option>MEI</option>
-            </select>
-
-            <label>Data de Admissão:</label>
-            <input type="date" name="dataAdmissao" required />
-
-            <label>Telefone:</label>
-            <input type="tel" name="telefone" maxlength="15" required oninput="mascaraTelefone(this)" />
-
-            <label>Email:</label>
-            <input type="email" name="email" required maxlength="100" />
-
-            <label>Endereço:</label>
-            <input type="text" name="endereco" required maxlength="150" />
-
-            <label>Complemento:</label>
-            <input type="text" name="complemento" required maxlength="150" />
-
-            <label>Bairro:</label>
-            <input type="text" name="bairro" required maxlength="150" />
-
-            <label>Município:</label>
-            <input type="text" name="municipio" required maxlength="150" />
-
-            <label>CEP:</label>
-            <input type="text" name="cep" maxlength="10" required oninput="mascaraCEP(this)" />
-
-            <label>Banco:</label>
-            <input type="text" name="banco" required maxlength="100" />
-
-            <label>Agência:</label>
-            <input type="text" name="agencia" required maxlength="50" />
-
-            <label>Conta:</label>
-            <input type="text" name="conta" required maxlength="30" />
-
-            <label>PIX:</label>
-            <input type="text" name="pix" required maxlength="80" />
-
-            <label>Data de Nascimento:</label>
-            <input type="date" name="dataNascimento" required id="dataNascimento" />
-
-            <label>Idade:</label>
-            <input type="number" name="idade" id="idade" disabled />
-
-            <label>CPF:</label>
-            <input type="text" name="cpf" maxlength="14" required oninput="mascaraCPF(this)" />
-
-            <label>RG:</label>
-            <input type="text" name="rg" maxlength="12" required oninput="mascaraRG(this)" />
-
-            <label>Estado Civil:</label>
-            <select name="estadoCivil" required>
-                <option value="">Selecione</option>
-                <option>Casado(a)</option>
-                <option>Solteiro(a)</option>
-                <option>Separado(a)</option>
-                <option>Divorciado(a)</option>
-                <option>Viúvo(a)</option>
-            </select>
-
-            <label>Filhos:</label>
-            <input type="number" name="filhos" max="99" required maxlength="2" oninput="limitarDigitos(this)" />
-
-            <label>Nome de Familiar para Contato:</label>
-            <input type="text" name="nomeFamiliar" required maxlength="30" />
-
-            <label>Telefone do Familiar:</label>
-            <input type="tel" name="contatoFamiliar" maxlength="15" required oninput="mascaraTelefone(this)" />
-
-            <label>Indicado por:</label>
-            <input type="text" name="indicado" required maxlength="30" />
-
-            <label>Se desejar, utilize o campo 'Observações' para deixar uma mensagem adicional ou comentário
-                relevante.</label>
-            <textarea name="observacao" maxlength="250" style="width: 100%; height: 120px"></textarea>
-
-            <div class="button">
-                <input type="submit" value="Enviar" />
+            <div>
+                <label class="email">Email: </label>
+                <input type="email" name="email" maxlength="80" required placeholder="e-mail"
+                    style="margin-left: 31px; width: 397px;" />
             </div>
+            <div class="">
+                <label style="display: inline-block; width: 80px;">Endereço: </label>
+                <input type="text" name="endereco" maxlength="100" required placeholder="endereço"
+                    style="width: 397px;" />
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label>Complemento: </label>
+                <input type="text" name="complemento" maxlength="80" required placeholder="complemento"
+                    style="margin-left: 5px; width: 364px;" />
+            </div>
+            <div>
+                <label>Bairro: </label>
+                <input type="text" name="bairro" maxlength="100" required placeholder="bairro"
+                    style="margin-left: 23px; width: 402px;" />
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 0px;">
+                <label>Município:</label>
+                <input type="text" name="municipio" maxlength="100" required placeholder="município"
+                    style="margin-left: 1px; width: 401px;" />
+            </div>
+            <div>
+                <label>CEP:</label>
+                <input type="text" name="cep" maxlength="10" required placeholder="cep"
+                    style="margin-left: 36px; width: 80px;" oninput="mascaraCEP(this)" />
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label>Banco:</label><input type="text" name="banco" maxlength="50" required placeholder="banco"
+                    style="margin-left: 25px; width: 402px;" />
+            </div>
+            <div class="agencia">
+                <label>Agência: </label>
+                <input type="text" name="agencia" maxlength="30" required placeholder="agência" style="width: 100px;" />
+                <label class="conta">Conta: </label>
+                <input type="text" name="conta" maxlength="30" required placeholder="conta" style="width: 100px;" />
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label>PIX:</label>
+                <input type="text" name="pix" maxlength="50" required placeholder="pix"
+                    style="margin-left: 40px; width: 412px;" />
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label>Nome Familiar:</label>
+                <input type="text" name="nomeFamiliar" maxlength="100" required placeholder="nome de um familiar"
+                    style="margin-left: 5px; width: 362px;" />
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label>Contato Familiar:</label>
+                <input type="text" name="contatoFamiliar" maxlength="15" required placeholder="contato"
+                    style="margin-left: 5px; width: 100px;" oninput="mascaraTelefone(this)" />
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label>Indicado:</label>
+                <input type="text" name="indicado" maxlength="100" required placeholder="indicado"
+                    style="margin-left: 5px; width: 404px;" />
+            </div>
+            <div style="width: 400px;">
+                <label>Se desejar, utilize o campo abaixo para deixar uma mensagem adicional ou
+                    comentário
+                    relevante.
+                </label><textarea name="observacao" maxlength="300" placeholder="Observações"
+                    style="width: 480px;"></textarea>
+            </div>
+            <button type="submit" style="width: 200px;">Enviar</button>
+            <button type="button" onclick="carregarFuncionarios()" style="width: 200px;">Ver Funcionários
+                Cadastrados</button>
+            <div id="listaFuncionarios" style="margin-top: 30px;"></div>
         </form>
     </div>
 
     <script>
-        // Máscaras e utilitários
-        function limitarDigitos(input) {
-            if (input.value.length > 2) input.value = input.value.slice(0, 2);
-        }
-
         function mascaraTelefone(input) {
             input.value = input.value
                 .replace(/\D/g, '')
                 .replace(/^(\d{2})(\d)/g, '($1)$2')
                 .replace(/(\d{5})(\d)/, '$1-$2')
                 .substring(0, 14);
+        }
+
+        function mascaraCEP(input) {
+            input.value = input.value
+                .replace(/\D/g, '')
+                .replace(/(\d{2})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1-$2')
+                .substring(0, 10);
         }
 
         function mascaraCPF(input) {
@@ -213,94 +257,96 @@
         }
 
         function mascaraRG(input) {
-            input.value = input.value
-                .replace(/\D/g, '')
-                .replace(/(\d{2})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{1})$/, '$1-$2')
-                .substring(0, 12);
+            let value = input.value.replace(/\D/g, '');
+            value = value.substring(0, 9);
+            if (value.length > 2 && value.length <= 5) {
+                value = value.replace(/^(\d{2})(\d+)/, '$1.$2');
+            } else if (value.length > 5 && value.length <= 8) {
+                value = value.replace(/^(\d{2})(\d{3})(\d+)/, '$1.$2.$3');
+            } else if (value.length === 9) {
+                value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d)/, '$1.$2.$3-$4');
+            }
+            input.value = value;
         }
 
-        function mascaraCEP(input) {
-            input.value = input.value
-                .replace(/\D/g, '')
-                .replace(/^(\d{2})(\d)/g, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1-$2')
-                .substring(0, 10);
-        }
-
-        // Atualização dos nomes dos arquivos
-        ['cnhArquivo', 'comprovanteResidencia', 'nadaConstaArquivo', 'meiArquivo'].forEach(id => {
-            const input = document.getElementById(id);
-            const span = document.getElementById(`nomeArquivo${id.charAt(0).toUpperCase() + id.slice(1)}`);
-            if (input && span) {
-                input.addEventListener('change', () => {
-                    span.textContent = input.files.length > 0 ? input.files[0].name : 'Nenhum arquivo escolhido';
-                });
-            }
-        });
-
-        // Idade automática
-        document.getElementById('dataNascimento')?.addEventListener('change', function () {
-            const dataNasc = new Date(this.value);
-            const hoje = new Date();
-            if (!isNaN(dataNasc)) {
-                let idade = hoje.getFullYear() - dataNasc.getFullYear();
-                const m = hoje.getMonth() - dataNasc.getMonth();
-                if (m < 0 || (m === 0 && hoje.getDate() < dataNasc.getDate())) idade--;
-                document.getElementById('idade').value = idade;
-            } else {
-                document.getElementById('idade').value = '';
-            }
-        });
-
-        // Envio do formulário
-        document.getElementById('dadosForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const form = e.target;
-
-            // Validação básica de arquivos obrigatórios
+        document.addEventListener("DOMContentLoaded", () => {
             const arquivosObrigatorios = [
-                { id: 'cnhArquivo', nome: 'CNH' },
+                { id: 'cnhArquivo', nome: 'CNH (PDF ou imagem)' },
                 { id: 'comprovanteResidencia', nome: 'Comprovante de Residência' }
             ];
 
-            for (const arquivo of arquivosObrigatorios) {
-                const input = document.getElementById(arquivo.id);
-                if (!input || input.files.length === 0) {
-                    alert(`Por favor, selecione o arquivo obrigatório: ${arquivo.nome}`);
-                    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    return;
+            const arquivosTodos = [
+                { inputId: 'cnhArquivo', spanId: 'nomeArquivoCNH' },
+                { inputId: 'comprovanteResidencia', spanId: 'nomeArquivoComprovante' },
+                { inputId: 'nadaConstaArquivo', spanId: 'nomeArquivoNadaConsta' },
+                { inputId: 'meiArquivo', spanId: 'nomeArquivoMEI' }
+            ];
+
+            arquivosTodos.forEach(({ inputId, spanId }) => {
+                const input = document.getElementById(inputId);
+                const span = document.getElementById(spanId);
+                if (input && span) {
+                    input.addEventListener("change", () => {
+                        span.textContent = input.files.length > 0
+                            ? input.files[0].name
+                            : "Nenhum arquivo escolhido";
+                    });
                 }
-            }
+            });
 
-            if (!form.checkValidity()) {
-                alert('Por favor, preencha todos os campos obrigatórios.');
-                return;
-            }
+            document.getElementById('formFuncionario')?.addEventListener('submit', function (e) {
+                const form = e.target;
+                const campos = [
+                    { nome: 'cnh', tamanho: 11, label: 'CNH' },
+                    { nome: 'telefone', tamanho: 14, label: 'Telefone' },
+                    { nome: 'cep', tamanho: 10, label: 'CEP' },
+                    { nome: 'cpf', tamanho: 14, label: 'CPF' },
+                    { nome: 'rg', tamanho: 13, label: 'RG' },
+                    { nome: 'filhos', tamanho: 1, tipo: 'numero', max: 2, label: 'Filhos' },
+                    { nome: 'contatoFamiliar', tamanho: 14, label: 'Contato Familiar' }
+                ];
 
-            const formData = new FormData(form); // Inclui campos e arquivos automaticamente
+                for (const campo of campos) {
+                    const el = form.elements[campo.nome];
+                    if (!el) continue;
 
-            try {
-                const response = await fetch("https://formulario-funcionarios.onrender.com/enviar", {
-                    method: "POST",
-                    body: formData
+                    const valor = el.value.replace(/\D/g, '');
+                    const isNumero = campo.tipo === 'numero';
+
+                    if (isNumero) {
+                        if (isNaN(valor) || valor.length > campo.max) {
+                            alert(`${campo.label} deve conter no máximo ${campo.max} dígitos.`);
+                            el.focus();
+                            e.preventDefault();
+                            return;
+                        }
+                    } else if (valor.length !== campo.tamanho) {
+                        alert(`${campo.label} deve conter exatamente ${campo.tamanho} dígitos.`);
+                        el.focus();
+                        e.preventDefault();
+                        return;
+                    }
+                }
+            });
+
+            document.getElementById('formFuncionario').addEventListener('submit', function (e) {
+                let erroEncontrado = false;
+                arquivosObrigatorios.forEach(({ id, nome }) => {
+                    const input = document.getElementById(id);
+                    if (!input || !input.files.length) {
+                        alert(`Por favor, envie o documento obrigatório: ${nome}.`);
+                        erroEncontrado = true;
+                    }
                 });
 
-                if (response.ok) {
-                    alert("Formulário enviado com sucesso!");
-                    // window.location.href = 'agradecimento.html';
-                } else {
-                    alert("Erro ao enviar formulário. Tente novamente.");
+                if (erroEncontrado) {
+                    e.preventDefault(); // Impede o envio do formulário
                 }
-            } catch (err) {
-                alert("Erro de conexão. Verifique sua internet ou tente mais tarde.");
-                console.error(err);
-            }
+            });
         });
-    </script>
 
+    </script>
+    <script src="index.js"></script>
 </body>
 
 </html>

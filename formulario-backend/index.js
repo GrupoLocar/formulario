@@ -1,45 +1,116 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB conectado'))
-  .catch((err) => console.error('Erro ao conectar ao MongoDB:', err));
+// 📁 Garante que a pasta "uploads" exista
+const uploadPath = 'uploads';
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath);
+}
 
-const CadastroSchema = new mongoose.Schema({
-  nome: String,
-  email: String,
-  telefone: String,
-  cep: String,
-  endereco: String,
-  cidade: String,
-  estado: String
+// 🎒 Configuração do multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadPath),
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
+const upload = multer({ storage });
 
-const Cadastro = mongoose.model('Cadastro', CadastroSchema);
+// 📦 Schema do Funcionário
+const funcionarioSchema = new mongoose.Schema({
+  nome: String,
+  situacao: { type: String, default: 'Aprovar' },
+  contrato: { type: String, default: 'Verificar' },
+  dataAdmissao: Date,
+  telefone: String,
+  email: String,
+  endereco: String,
+  complemento: String,
+  bairro: String,
+  municipio: String,
+  cep: String,
+  banco: String,
+  agencia: String,
+  conta: String,
+  pix: String,
+  dataNascimento: Date,
+  cpf: String,
+  rg: String,
+  estadoCivil: String,
+  filhos: Number,
+  cnh: String,
+  categoria: String,
+  dataValidadeCNH: Date,
+  nomeFamiliar: String,
+  contatoFamiliar: String,
+  dataUltimoServicoPrestado: { type: Date, default: new Date('1900-01-01T00:00:00.000Z') },
+  indicado: String,
+  observacao: String,
+  cnhDocumento: String,
+  comprovanteResidencia: String,
+  nadaConsta: String,
+  comprovanteMei: String
+}, { timestamps: true });
 
-app.post('/api/cadastro', async (req, res) => {
+const Funcionario = mongoose.model('Funcionario', funcionarioSchema);
+
+// 🔗 Conexão MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ Conectado ao MongoDB Atlas");
+    console.log("🗃️ Banco:", mongoose.connection.name);
+  })
+  .catch(err => console.error("❌ Erro de conexão:", err));
+
+// 📥 POST /api/funcionarios
+app.post('/api/funcionarios', upload.fields([
+  { name: 'cnhArquivo', maxCount: 1 },
+  { name: 'comprovanteResidencia', maxCount: 1 },
+  { name: 'nadaConstaArquivo', maxCount: 1 },
+  { name: 'meiArquivo', maxCount: 1 }
+]), async (req, res) => {
   try {
-    const novoCadastro = new Cadastro(req.body);
-    await novoCadastro.save();
-    res.status(200).json({ message: 'Cadastro salvo com sucesso!' });
-  } catch (error) {
-    console.error('Erro ao salvar cadastro:', error);
-    res.status(500).json({ error: 'Erro ao salvar cadastro.' });
+    const body = req.body;
+    const arquivos = req.files;
+
+    const novoFuncionario = new Funcionario({
+      ...body,
+      telefone: body.telefone?.replace(/\D/g, ''),
+      contatoFamiliar: body.contatoFamiliar?.replace(/\D/g, ''),
+      cnhDocumento: arquivos?.cnhArquivo?.[0]?.filename || '',
+      comprovanteResidencia: arquivos?.comprovanteResidencia?.[0]?.filename || '',
+      nadaConsta: arquivos?.nadaConstaArquivo?.[0]?.filename || '',
+      comprovanteMei: arquivos?.meiArquivo?.[0]?.filename || ''
+    });
+
+    await novoFuncionario.save();
+    res.status(201).json(novoFuncionario);
+  } catch (err) {
+    console.error("❌ Erro ao salvar:", err);
+    res.status(500).json({ erro: err.message });
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('API do Formulário GrupoLocar ativa!');
+// 📤 GET /api/funcionarios
+app.get('/api/funcionarios', async (req, res) => {
+  try {
+    const funcionarios = await Funcionario.find().sort({ nome: 1 });
+    res.json(funcionarios);
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao buscar funcionários' });
+  }
 });
 
-const PORT = process.env.PORT;
-
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando na porta ${PORT}`);
-});
+// 🚀 Inicialização do servidor
+const PORT = 10000;
+app.listen(PORT, '0.0.0.0', () =>
+  console.log(`🚀 Servidor rodando em http://0.0.0.0:${PORT}`)
+);
