@@ -6,6 +6,71 @@ document.getElementById('formFuncionario')?.addEventListener('submit', async fun
   const form = e.target;
   const formData = new FormData(form);
 
+  // Validação básica de texto obrigatório
+  const camposObrigatorios = [
+    'nome', 'telefone', 'email', 'endereco', 'bairro', 'municipio', 'cep',
+    'cpf', 'rg', 'cnh', 'dataValidadeCNH', 'dataNascimento',
+    'banco', 'agencia', 'conta', 'pix', 'nomeFamiliar', 'contatoFamiliar',
+    'indicado', 'complemento'
+  ];
+
+  for (const campo of camposObrigatorios) {
+    const input = form.elements[campo];
+    if (!input || input.value.trim() === '') {
+      alert(`Por favor, preencha o campo obrigatório: ${campo}`);
+      input?.focus();
+      return;
+    }
+  }
+
+  // Validação de campos com formatação específica (máscara)
+  const camposComTamanho = [
+    { nome: 'cpf', tamanho: 11, label: 'CPF' },
+    { nome: 'rg', tamanho: 9, label: 'RG' },
+    { nome: 'telefone', tamanho: 11, label: 'Telefone' },
+    { nome: 'contatoFamiliar', tamanho: 11, label: 'Contato Familiar' },
+    { nome: 'cep', tamanho: 8, label: 'CEP' },
+    { nome: 'cnh', tamanho: 11, label: 'CNH' }
+  ];
+
+  for (const campo of camposComTamanho) {
+    const input = form.elements[campo.nome];
+    const valorNumerico = input?.value.replace(/\D/g, '');
+    if (!valorNumerico || valorNumerico.length !== campo.tamanho) {
+      alert(`${campo.label} deve conter exatamente ${campo.tamanho} dígitos.`);
+      input?.focus();
+      return;
+    }
+  }
+
+  // Validação de campos do tipo <select>
+  const categoria = form.elements['categoria'];
+  const estadoCivil = form.elements['estadoCivil'];
+  if (!categoria.value) {
+    alert("Por favor, selecione uma Categoria válida.");
+    categoria.focus();
+    return;
+  }
+  if (!estadoCivil.value) {
+    alert("Por favor, selecione um Estado Civil válido.");
+    estadoCivil.focus();
+    return;
+  }
+
+  // Validação de anexos obrigatórios
+  const cnhArquivo = document.getElementById('cnhArquivo');
+  const comprovanteResidencia = document.getElementById('comprovanteResidencia');
+  if (!cnhArquivo?.files.length) {
+    alert("Por favor, anexe o documento obrigatório: CNH (PDF ou imagem).");
+    return;
+  }
+  if (!comprovanteResidencia?.files.length) {
+    alert("Por favor, anexe o documento obrigatório: Comprovante de Residência.");
+    return;
+  }
+
+  // Campos fixos adicionais
+  formData.append("dataAdmissao", "1900-01-01T00:00:00.000+00:00");
   formData.append("dataUltimoServicoPrestado", "1900-01-01T00:00:00.000Z");
   formData.append("createdAt", new Date().toISOString());
   formData.append("updatedAt", new Date().toISOString());
@@ -21,6 +86,8 @@ document.getElementById('formFuncionario')?.addEventListener('submit', async fun
     if (res.ok) {
       alert("✅ Funcionário salvo com sucesso!");
       form.reset();
+      document.getElementById('nomeArquivoCNH').textContent = "Nenhum arquivo escolhido";
+      document.getElementById('nomeArquivoComprovante').textContent = "Nenhum arquivo escolhido";
     } else {
       alert("❌ Erro: " + resultado.erro);
       console.error(resultado);
@@ -63,7 +130,7 @@ async function carregarFuncionarios() {
           <td>${f.nome || ''}</td>
           <td>${f.situacao || ''}</td>
           <td>${f.contrato || ''}</td>
-          <td>${f.dataAdmissao?.substring(0,10) || ''}</td>
+          <td>${f.dataAdmissao?.substring(0, 10) || ''}</td>
           <td>${f.telefone || ''}</td>
           <td>${f.email || ''}</td>
           <td>${f.endereco || ''}</td>
@@ -75,17 +142,17 @@ async function carregarFuncionarios() {
           <td>${f.agencia || ''}</td>
           <td>${f.conta || ''}</td>
           <td>${f.pix || ''}</td>
-          <td>${f.dataNascimento?.substring(0,10) || ''}</td>
+          <td>${f.dataNascimento?.substring(0, 10) || ''}</td>
           <td>${f.cpf || ''}</td>
           <td>${f.rg || ''}</td>
           <td>${f.estadoCivil || ''}</td>
           <td>${f.filhos || ''}</td>
           <td>${f.cnh || ''}</td>
           <td>${f.categoria || ''}</td>
-          <td>${f.dataValidadeCNH?.substring(0,10) || ''}</td>
+          <td>${f.dataValidadeCNH?.substring(0, 10) || ''}</td>
           <td>${f.nomeFamiliar || ''}</td>
           <td>${f.contatoFamiliar || ''}</td>
-          <td>${f.dataUltimoServicoPrestado?.substring(0,10) || ''}</td>
+          <td>${f.dataUltimoServicoPrestado?.substring(0, 10) || ''}</td>
           <td>${f.indicado || ''}</td>
           <td>${f.observacao || ''}</td>
           <td>${f.cnhDocumento ? `<a href="${UPLOADS_URL}/${f.cnhDocumento}" target="_blank">Ver</a>` : ''}</td>

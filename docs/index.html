@@ -59,12 +59,10 @@
             <div>
                 <label>CNH (PDF ou imagem): Por favor envie o documento e preencha os campos abaixo.</label>
                 <div class="custom-file-upload">
-                    <input class="cnhPdfImagem" type="file" id="cnhArquivo" name="cnhArquivo" accept=".pdf,image/*"
-                        style="display: none" />
-                    <button class="cnhPdfImagem type=" button"
-                        onclick="document.getElementById('cnhArquivo').click()">Selecionar
+                    <input type="file" id="cnhArquivo" name="cnhArquivo" accept=".pdf,image/*" style="display: none" />
+                    <button type="button" onclick="document.getElementById('cnhArquivo').click()">Selecionar
                         Arquivo</button>
-                    <span class="cnhPdfImagem id=" nomeArquivoCNH">Nenhum arquivo escolhido</span>
+                    <span id="nomeArquivoCNH">Nenhum arquivo escolhido</span>
                 </div>
             </div>
             <div style="display: flex; align-items: center; margin-bottom: 10px;">
@@ -79,7 +77,7 @@
             <div>
                 <label>Categoria:</label>
                 <select class="categoria" name="categoria" required style="width: 110px;">
-                    <option>Selecione</option>
+                    <option value="">Selecione</option>
                     <option>AB</option>
                     <option>AC</option>
                     <option>AD</option>
@@ -117,10 +115,10 @@
             </div>
             <div class="form-grid">
                 <div class="form-col">
-                    <div>
+                    <!-- <div>
                         <label>Data de Admissão: </label>
                         <input class="inputadmissao" type="date" name="dataAdmissao" required style="width: 100px;" />
-                    </div>
+                    </div> -->
                     <div class="form-item">
                         <label>Data de Nascimento: </label>
                         <input class="inputnascimento" type="date" name="dataNascimento" required
@@ -130,7 +128,7 @@
                     <div class="form-item">
                         <label>Estado Civil: </label>
                         <select class="estadocivil" name="estadoCivil" required>
-                            <option>Selecione</option>
+                            <option value="">Selecione</option>
                             <option>Casado(a)</option>
                             <option>Solteiro(a)</option>
                             <option>Separado(a)</option>
@@ -145,7 +143,7 @@
                     </div>
                     <div class="form-item">
                         <label>RG: </label>
-                        <input class="inputrg" type="text" name="rg" maxlength="13" required placeholder="rg"
+                        <input class="inputrg" type="text" name="rg" maxlength="12" required placeholder="rg"
                             style="width: 100px;" oninput="mascaraRG(this)" />
                     </div>
                     <div class="form-item">
@@ -248,26 +246,34 @@
         }
 
         function mascaraCPF(input) {
-            input.value = input.value
-                .replace(/\D/g, '')
+            const valor = input.value.replace(/\D/g, '').substring(0, 11); // Só 11 dígitos numéricos
+            input.value = valor
                 .replace(/(\d{3})(\d)/, '$1.$2')
                 .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{2})$/, '$1-$2')
-                .substring(0, 14);
+                .replace(/(\d{3})(\d{2})$/, '$1-$2');
         }
 
         function mascaraRG(input) {
-            let value = input.value.replace(/\D/g, '');
-            value = value.substring(0, 9);
-            if (value.length > 2 && value.length <= 5) {
-                value = value.replace(/^(\d{2})(\d+)/, '$1.$2');
-            } else if (value.length > 5 && value.length <= 8) {
-                value = value.replace(/^(\d{2})(\d{3})(\d+)/, '$1.$2.$3');
-            } else if (value.length === 9) {
-                value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d)/, '$1.$2.$3-$4');
-            }
-            input.value = value;
+            const valor = input.value.replace(/\D/g, '').substring(0, 9); // limita a 9 números
+            input.value = valor
+                .replace(/(\d{2})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
         }
+
+
+        // function mascaraRG(input) {
+        //     let value = input.value.replace(/\D/g, '');
+        //     value = value.substring(0, 9);
+        //     if (value.length > 2 && value.length <= 5) {
+        //         value = value.replace(/^(\d{2})(\d+)/, '$1.$2');
+        //     } else if (value.length > 5 && value.length <= 8) {
+        //         value = value.replace(/^(\d{2})(\d{3})(\d+)/, '$1.$2.$3');
+        //     } else if (value.length === 9) {
+        //         value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d)/, '$1.$2.$3-$4');
+        //     }
+        //     input.value = value;
+        // }
 
         document.addEventListener("DOMContentLoaded", () => {
             const arquivosObrigatorios = [
@@ -298,12 +304,12 @@
                 const form = e.target;
                 const campos = [
                     { nome: 'cnh', tamanho: 11, label: 'CNH' },
-                    { nome: 'telefone', tamanho: 14, label: 'Telefone' },
-                    { nome: 'cep', tamanho: 10, label: 'CEP' },
-                    { nome: 'cpf', tamanho: 14, label: 'CPF' },
-                    { nome: 'rg', tamanho: 13, label: 'RG' },
+                    { nome: 'telefone', tamanho: 11, label: 'Telefone' },
+                    { nome: 'cep', tamanho: 8, label: 'CEP' },
+                    { nome: 'cpf', tamanho: 11, label: 'CPF' },
+                    { nome: 'rg', tamanho: 9, label: 'RG' },
                     { nome: 'filhos', tamanho: 1, tipo: 'numero', max: 2, label: 'Filhos' },
-                    { nome: 'contatoFamiliar', tamanho: 14, label: 'Contato Familiar' }
+                    { nome: 'contatoFamiliar', tamanho: 11, label: 'Contato Familiar' }
                 ];
 
                 for (const campo of campos) {
