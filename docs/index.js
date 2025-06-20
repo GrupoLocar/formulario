@@ -1,5 +1,7 @@
-const API_FUNCIONARIOS = 'http://localhost:10000/api/funcionarios';
-const UPLOADS_URL = 'http://localhost:10000/uploads';
+// const API_FUNCIONARIOS = 'http://localhost:10000/api/funcionarios';
+// const UPLOADS_URL = 'http://localhost:10000/uploads';
+const API_FUNCIONARIOS = '/api/funcionarios';
+const UPLOADS_URL = '/uploads';
 
 document.getElementById('formFuncionario')?.addEventListener('submit', async function (e) {
   e.preventDefault();
