@@ -20,11 +20,10 @@ img.logo {
 }
 
   .container {
-    background-color: #ffa200;
     max-width: 600px;
-    margin: 0 auto;
+    margin: auto;
     background: white;
-    /* padding: 50px 50px 50px 50px; */
+    padding: 50px;
     border-radius: 8px;
   }
 

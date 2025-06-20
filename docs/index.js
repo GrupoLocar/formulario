@@ -1,7 +1,9 @@
 // const API_FUNCIONARIOS = 'http://localhost:10000/api/funcionarios';
 // const UPLOADS_URL = 'http://localhost:10000/uploads';
-const API_FUNCIONARIOS = '/api/funcionarios';
-const UPLOADS_URL = '/uploads';
+// const API_FUNCIONARIOS = '/api/funcionarios';
+// const UPLOADS_URL = '/uploads';
+const API_FUNCIONARIOS = 'https://formulario-funcionarios.onrender.com/api/funcionarios';
+const UPLOADS_URL = 'https://formulario-funcionarios.onrender.com/uploads';
 
 document.getElementById('formFuncionario')?.addEventListener('submit', async function (e) {
   e.preventDefault();
